@@ -94,7 +94,21 @@ describe('node-aes-gcm', function () {
       decryptedBadAuthTag.auth_ok.should.not.be.ok();
     });
   }
+  describe('IVT test', function () {
+    before(function () {
+      key = Buffer.from('be45cb2605bf36bebde684841a28f0fd43c69850a3dce5fedba69928ee3a8991','hex');
+      iv = Buffer.from('f7a093cd1ce82f11bc318b3e','hex');
+      aad = Buffer.alloc(240,0)
+      aad.writeUInt32LE(0x5aa55aa5,0)
+      aad.writeUInt32LE(1,4)
+      aad.writeUInt32LE(0x00401000,12)
+      plaintext =  Buffer.from([]);
+      ciphertext = Buffer.from([]);
+      auth_tag =  Buffer.from('e009b70864ecfe4e5262432f13d5ba97','hex');;
+    });
 
+    runEncryptDecryptTestCases(true);
+  });
   describe('NIST Test Case 1', function () {
     before(function () {
       key = Buffer.from('00000000000000000000000000000000', 'hex');
@@ -438,4 +452,6 @@ describe('node-aes-gcm', function () {
 
     runEncryptDecryptTestCases(false);
   });
+
+  
 });
